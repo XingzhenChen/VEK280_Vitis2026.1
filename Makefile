@@ -51,7 +51,7 @@ sim: $(BUILD)/libadf.a
 	cd "$(BUILD)" && aiesimulator --pkg-dir Work --output-dir sim
 
 $(BUILD)/krnl_aieml.xclbin: $(BUILD)/aieml.xsa $(BUILD)/libadf.a $(ROOT)/Makefile
-	cd "$(BUILD)" && v++ --package -t $(TARGET) --platform "$(PLATFORM)" \
+	cd "$(BUILD)" && v++ --package --save-temps -t $(TARGET) --platform "$(PLATFORM)" \
 		--package.boot_mode sd --package.no_image --package.defer_aie_run \
 		--package.out_dir package "$(BUILD)/aieml.xsa" "$(BUILD)/libadf.a" -o "$@"
 
