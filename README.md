@@ -1,26 +1,26 @@
-# VEK280 最小工程
+# Minimal VEK280 Project
 
-Vitis 2026.1 / EDF，Yocto 路径固定为 `/home/xingzhen/YOCTO_ARTIFACTS`。
+Vitis 2026.1 / EDF. Yocto artifacts are located at `/home/xingzhen/YOCTO_ARTIFACTS`.
 
 ```bash
 source env.sh
-make aie           # 编译 AIE
-make kernels       # 编译 PL
-make host          # 编译 AArch64 host
-make sim           # AIE 仿真
-make link          # 链接 XSA
-make               # 编译并打包 hw_emu
-make run           # QEMU 硬件仿真
-make TARGET=hw     # 编译并打包硬件版本
-make clean         # 删除整个 build/，保留源码和输入数据
+make aie           # Compile the AIE graph
+make kernels       # Compile the HLS top
+make host          # Compile the AArch64 host
+make sim           # Run AIE simulation
+make link          # Link the XSA
+make               # Build and package hw_emu
+make run           # Run hardware emulation in QEMU
+make TARGET=hw     # Build and package for hardware
+make clean         # Remove build/ and preserve sources and input data
 ```
 
-直接修改 `src/`；矩阵尺寸和迭代次数在 `src/config.h`，PL / AIE 连接在 `system.cfg`。Makefile 不传递算法参数。
+Edit `src/` directly. Matrix dimensions and the iteration count are defined in `src/config.h`; PL/AIE connections are defined in `system.cfg`. The Makefile does not pass algorithm parameters.
 
-HLS 只综合一个 `top`：`src/pl/top.cpp` 定义接口及 DATAFLOW，`mm2s.cpp` 和 `s2mm.cpp` 是内部子模块。Makefile 将 `src/pl/` 下全部 `.cpp` 编译成一个 `top.xo`，链接时只实例化 `top_1`，host 只启动一次该核。新增子模块文件放在同一目录即可。
+HLS synthesizes a single `top`. Its interfaces and DATAFLOW region are defined in `src/pl/top.cpp`; `mm2s.cpp` and `s2mm.cpp` implement internal submodules. The Makefile compiles all `.cpp` files in `src/pl/` into one `top.xo`. Linking creates only `top_1`, and the host launches that kernel once. Add new submodule files to the same directory.
 
-`data/` 包含当前 64×64 矩阵、4 次迭代的输入和参考结果。更换算法或尺寸时自行修改数据。AIE 仿真输出位于 `build/hw_emu/sim/data/`。
+`data/` contains inputs and reference results for 64x64 matrices and four iterations. Update these files when changing the algorithm or dimensions. AIE simulation outputs are written to `build/hw_emu/sim/data/`.
 
-板端运行文件在 `build/hw/runtime/`，复制整个目录到 VEK280 后执行 `sudo ./run.sh`。`make TARGET=hw` 生成运行文件包，不烧写 SD 卡。
+Hardware runtime files are placed in `build/hw/runtime/`. Copy the entire directory to the VEK280 and run `sudo ./run.sh` from that directory. `make TARGET=hw` generates the runtime package; it does not flash an SD card.
 
-源码已纳入本工程，构建不复制外部示例。基线源自 AMD Vitis AIE-ML system design 示例和 VEK280 EDF 教程，许可证见 `LICENSES/`。
+All design sources are included in this project; the build does not copy external examples. The baseline is derived from the AMD Vitis AIE-ML system design example and the VEK280 EDF tutorial.
