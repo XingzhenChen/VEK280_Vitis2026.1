@@ -1,5 +1,4 @@
 #!/bin/bash
-# SPDX-License-Identifier: MIT
 set -euo pipefail
 build=$1
 prebuilt=$YOCTO_ARTIFACTS/amd-cortexa72-common_vek280_qemu_prebuilt

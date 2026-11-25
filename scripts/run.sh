@@ -1,6 +1,5 @@
 #!/bin/bash
 # Copyright (C) 2026, Advanced Micro Devices, Inc. All rights reserved.
-# SPDX-License-Identifier: MIT
 set -euo pipefail
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 export PATH="$PATH:/sbin:/usr/sbin"

@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: MIT
 #pragma once
 
 #define A_ROWS 64
